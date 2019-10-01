@@ -7,10 +7,6 @@ const server = express();
 const db = require("./data/db.js"); 
 server.use(express.json()); 
 
-// test servers responsive 
-// server.get("/", (req, res) => {
-//     res.send("It's working")
-// })
 
 
 // .post()
@@ -23,11 +19,11 @@ server.post("/api/users", (req, res) => {
     } else {   
         db
         .insert(dbData)
-        .then(dbparam => {
-            res.status(200).json(dbparam)
+        .then(dbParam => {
+            res.status(200).json(dbParam)
         })
         .catch(error => {
-            res.status(500).json({error, error: "There was an error while saving the user to the date base"})
+            res.status(500).json({error: "There was an error while saving the user to the date base"})
         })
     }
 })
@@ -35,13 +31,16 @@ server.post("/api/users", (req, res) => {
 // .get()
 server.get("/api/users", (req, res) => {
 
+const body = req.body; 
+
     db 
-    .find()
+    .find(body)
     .then(users => {
         res.status(users).json(users)
     })
     .catch(error => {
-        console.log(error, {message: "user not found"})
+        // console.log(error, {message: "user not found"})
+        res.status(500).json({error: "The users information could not be retrieved"}) 
     })
 
 }) 
@@ -64,22 +63,22 @@ server.get("/api/users/:id", (req, res) => {
 })
 
 // .delete()
-server.delete("/api/users/:id", (req, res) => {
-    const {id} = req.params.id 
+// server.delete("/api/users/:id", (req, res) => {
+//     const {id} = req.params.id 
 
-    if(!id) {
-        res.status(404).json({message: "The user with the specified ID does not exits"})
-    } else {
-        bd
-        .remove(id)
-        .then(userRemove => {
-            res.status(200).json(userRemove)
-        })
-        .catch(error => {
-            res.status(500).json(error, {errorMessage: "Plase provide name and bio for the user"})
-        })
-    } 
-})
+//     if(!id) {
+//         res.status(404).json({message: "The user with the specified ID does not exits"})
+//     } else {
+//         bd
+//         .remove(id)
+//         .then(userRemove => {
+//             res.status(200).json(userRemove)
+//         })
+//         .catch(error => {
+//             res.status(500).json(error, {errorMessage: "Plase provide name and bio for the user"})
+//         })
+//     } 
+// })
 
 // .put() 
 // server.update("/api/users/:id", (req, res) => {
@@ -97,4 +96,4 @@ server.delete("/api/users/:id", (req, res) => {
 
 
 const port = 8000;
-server.listen(port, () => console.log('server running'));
+server.listen(port, () => console.log('\n***Server 8000 Listing***\n'));
