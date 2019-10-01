@@ -31,36 +31,32 @@ server.post("/api/users", (req, res) => {
 // .get()
 server.get("/api/users", (req, res) => {
 
-const body = req.body; 
-
     db 
-    .find(body)
-    .then(users => {
-        res.status(users).json(users)
-    })
+    .find()
+    .then(users => 
+        res.status(200).json(users)
+    )
     .catch(error => {
-        // console.log(error, {message: "user not found"})
         res.status(500).json({error: "The users information could not be retrieved"}) 
     })
-
 }) 
 
 // .get() with ID
-server.get("/api/users/:id", (req, res) => {
-    const {id} = req.params.id; 
-    if(!id) {
-        res.status(404).json({message: "The user with the specified ID does not exits"})
-    } else {
-        bd 
-        .findById(id)
-        .then(idUser => {
-            res.status(200).json(idUser)
-        })
-        .catch(error => {
-            res.status(500).json(error, {error: "The user information could not be retrieved"})
-        })
-    }
-})
+// server.get("/api/users/:id", (req, res) => {
+//     const {id} = req.params.id; 
+//     if(!id) {
+//         res.status(404).json({message: "The user with the specified ID does not exits"})
+//     } else {
+//         bd 
+//         .findById(id)
+//         .then(idUser => {
+//             res.status(200).json(idUser)
+//         })
+//         .catch(error => {
+//             res.status(500).json(error, {error: "The user information could not be retrieved"})
+//         })
+//     }
+// })
 
 // .delete()
 // server.delete("/api/users/:id", (req, res) => {
