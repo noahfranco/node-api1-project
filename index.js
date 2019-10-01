@@ -37,53 +37,51 @@ server.get("/api/users", (req, res) => {
         res.status(200).json(users)
     )
     .catch(error => {
+        console.log(error)
         res.status(500).json({error: "The users information could not be retrieved"}) 
     })
 }) 
 
 // .get() with ID
-// server.get("/api/users/:id", (req, res) => {
-//     const {id} = req.params.id; 
-//     if(!id) {
-//         res.status(404).json({message: "The user with the specified ID does not exits"})
-//     } else {
-//         bd 
-//         .findById(id)
-//         .then(idUser => {
-//             res.status(200).json(idUser)
-//         })
-//         .catch(error => {
-//             res.status(500).json(error, {error: "The user information could not be retrieved"})
-//         })
-//     }
-// })
+server.get("/api/users/:id", (req, res) => {
+    const { id } = req.params; 
+    if(!id) {
+        res.status(404).json({message: "The user with the specified ID does not exits"})
+    } else {
+        db
+        .findById(id)
+        .then(user => {
+            res.status(200).json(user)
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json(error, {error: "The user information could not be retrieved"})
+        })
+    }
+})
 
+// Doesn't seem to work on postman 
 // .delete()
-// server.delete("/api/users/:id", (req, res) => {
-//     const {id} = req.params.id 
+server.delete("/api/users/:id", (req, res) => {
+    const { id } = req.params;
+    
+    db.remove(id)
+    .then(deleted => {
+        if(deleted) {
+            res.status(204).send()
+        } else {
+            res.status(404).json({message: "The user with the specified ID does not exits"})
+        }
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({errorMessage: "Please provide name and bio for the user"})
+    })
+})
 
-//     if(!id) {
-//         res.status(404).json({message: "The user with the specified ID does not exits"})
-//     } else {
-//         bd
-//         .remove(id)
-//         .then(userRemove => {
-//             res.status(200).json(userRemove)
-//         })
-//         .catch(error => {
-//             res.status(500).json(error, {errorMessage: "Plase provide name and bio for the user"})
-//         })
-//     } 
-// })
 
 // .put() 
-// server.update("/api/users/:id", (req, res) => {
-//     const {id} = req.params.id
 
-//     if(!id) {
-
-//     }
-// })
 
 
 
